@@ -16,14 +16,30 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .txt-hero {
+    @apply text-ds-24 font-medium text-ds-grey-900;
+  }
+
+  .txt-section-label {
+    @apply text-ds-16 text-ds-grey-500 font-medium tracking-widest;
+  }
+
+  .txt-main-text-medium {
+    @apply text-ds-16 font-medium text-ds-grey-800;
+  }
+
+  .txt-button-text {
+    @apply text-ds-16 text-ds-black font-semibold tracking-[1px];
+  }
+
+  .txt-button-small-text {
+    @apply text-ds-12 text-ds-black font-light tracking-[0px];
+  }
+
+  .txt-paragraph {
+    @apply text-ds-16 font-regular;
+  }
 }
 
 @layer utilities {
