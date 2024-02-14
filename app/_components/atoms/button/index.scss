@@ -1,0 +1,37 @@
+@mixin buttonStyles($color) {
+    box-shadow: 4px 4px 0px theme('colors.' + $color);
+
+    &:hover {
+        box-shadow: 6px 6px 0px theme('colors.' + $color);
+        transform: translateY(-2px) translateX(-2px);
+    }
+
+    &:active {
+        box-shadow: 1px 1px 0px theme('colors.' + $color);
+        transform: translate(3px, 3px);
+    }
+}
+
+.btn {
+    @apply rounded-ds-4;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    @apply bg-ds-green-400 border border-ds-green-400;
+    @include buttonStyles('ds-green-500');
+}
+
+.btn-secondary {
+    @apply bg-ds-white border border-ds-grey-900;
+    @include buttonStyles('ds-black');
+}
+
+.btn-small {
+    @apply txt-button-small-text py-ds-8 px-ds-12;
+    box-shadow: none;
+}
+
+.btn-normal {
+    @apply txt-button-text p-ds-12;
+}
