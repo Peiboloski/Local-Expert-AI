@@ -18,7 +18,7 @@
 
 @layer components {
   .txt-hero {
-    @apply text-ds-24 font-medium text-ds-grey-900;
+    @apply max-md:text-ds-24 text-ds-36 font-medium text-ds-grey-900;
   }
 
   .txt-section-label {
@@ -34,7 +34,7 @@
   }
 
   .txt-button-small-text {
-    @apply text-ds-12 text-ds-black font-light tracking-[0px];
+    @apply text-ds-12 text-ds-black font-bold tracking-[1px];
   }
 
   .txt-paragraph {

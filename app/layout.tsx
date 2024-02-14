@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Header from "./_components/molecules/header";
 
 const spaceGrotestFont = Space_Grotesk({
   subsets: ["latin"],
@@ -21,7 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={spaceGrotestFont.className}>{children}</body>
+      <body className={spaceGrotestFont.className}>{
+        <div className="bg-ds-green-100 min-h-screen">
+          <Header />
+          {children}
+        </div>
+      }</body>
     </html>
   );
 }

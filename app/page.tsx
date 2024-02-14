@@ -1,39 +1,19 @@
-import Link from "next/link";
 import { ButtonLink } from "./_components/atoms/button";
+import Header from "./_components/molecules/header";
 
 export default function Home() {
   return (
-    <div className="bg-ds-green-100 min-h-screen">
-      <Header />
-      <div className="max-w-screen-md flex flex-col mx-auto">
-        <Hero />
-        <FeatureDescription />
-        <ExploreNearbyAttractions />
-      </div>
+    <div className="max-w-screen-md flex flex-col mx-auto">
+      <Hero />
+      <FeatureDescription />
+      <ExploreNearbyAttractions />
     </div>
-  );
-}
-
-// Header component
-function Header() {
-  return (
-    <header className="flex flex-row gap-ds-12 justify-between self-stretch px-ds-32 py-ds-16 bg-ds-grey-900">
-      <nav className="flex flex-row w-[100%] self-stretch gap-ds-12 justify-between align-middle">
-        <Link style={{ margin: "auto 0" }} href="/">
-          <span className="text-ds-grey-100 text-ds-16 font-medium">LOCAL GUIDE</span>
-          <span className="text-ds-green-500 text-ds-16 font-medium"> AI</span>
-        </Link>
-        <ButtonLink type="primary" size="small" href="/explore">
-          Explore nearby atractions
-        </ButtonLink>
-      </nav>
-    </header>
   );
 }
 
 function Section({ children, className, bgColor }: { children: React.ReactNode, className?: string, bgColor?: string }) {
   return (
-    <section className={`px-ds-32 ${bgColor} ${className}`}>
+    <section className={`px-ds-32 max-[400px]:px-ds-24 ${bgColor} ${className}`}>
       {children}
     </section>
   );
