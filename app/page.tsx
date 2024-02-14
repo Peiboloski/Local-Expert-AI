@@ -1,21 +1,13 @@
 import { ButtonLink } from "./_components/atoms/button";
-import Header from "./_components/molecules/header";
+import Section from "./_components/atoms/section";
 
 export default function Home() {
   return (
-    <div className="max-w-screen-md flex flex-col mx-auto">
+    <div className="flex flex-col mx-auto">
       <Hero />
       <FeatureDescription />
       <ExploreNearbyAttractions />
     </div>
-  );
-}
-
-function Section({ children, className, bgColor }: { children: React.ReactNode, className?: string, bgColor?: string }) {
-  return (
-    <section className={`px-ds-32 max-[400px]:px-ds-24 ${bgColor} ${className}`}>
-      {children}
-    </section>
   );
 }
 
