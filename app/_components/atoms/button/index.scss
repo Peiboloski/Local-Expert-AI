@@ -1,37 +1,55 @@
-@mixin buttonStyles($color) {
-    box-shadow: 4px 4px 0px theme('colors.' + $color);
+@mixin buttonStyles($color, $elevation: 4px) {
+    box-shadow: $elevation $elevation 0px theme('colors.' + $color);
+    $activeEleveation: 1px;
+    $hoverElevation: $elevation + 2px;
+    $activeTranslation: $elevation - $activeEleveation;
 
     &:hover {
-        box-shadow: 6px 6px 0px theme('colors.' + $color);
+        box-shadow: $hoverElevation $hoverElevation 0px theme('colors.' + $color);
         transform: translateY(-2px) translateX(-2px);
     }
 
     &:active {
         box-shadow: 1px 1px 0px theme('colors.' + $color);
-        transform: translate(3px, 3px);
+        transform: translate($activeTranslation, $activeTranslation);
     }
 }
 
-.btn {
+.components-btn {
     @apply rounded-ds-4;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
 }
 
-.btn-primary {
-    @apply bg-ds-green-400 border border-ds-green-400;
-    @include buttonStyles('ds-green-500');
-}
 
-.btn-secondary {
-    @apply bg-ds-white border border-ds-grey-900;
-    @include buttonStyles('ds-black');
-}
-
-.btn-small {
+.components-btn--small {
     @apply txt-button-small-text py-ds-8 px-ds-12;
     box-shadow: none;
 }
 
-.btn-normal {
+.components-btn--normal {
     @apply txt-button-text p-ds-12;
+}
+
+.components-btn--primary {
+    @apply bg-ds-green-400 border border-ds-green-400;
+
+    &.components-btn--normal {
+        @include buttonStyles('ds-green-500');
+    }
+
+    &.components-btn--small {
+        @include buttonStyles('ds-green-500', 0px);
+    }
+}
+
+.components-btn--secondary {
+    @apply bg-ds-white border border-ds-grey-900;
+
+    &.components-btn--normal {
+        @include buttonStyles('ds-black');
+    }
+
+    &.components-btn--small {
+        @include buttonStyles('ds-black', 0px);
+    }
 }

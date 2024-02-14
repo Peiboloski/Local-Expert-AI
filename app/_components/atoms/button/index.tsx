@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import './index.css'
+import './index.scss'
 
 type ButtonProps = {
     type: 'primary' | 'secondary';
@@ -11,18 +11,18 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({ type = 'primary', size = 'normal', children }) => {
 
-    let buttonClass = "btn"
+    let buttonClass = "components-btn"
 
     if (type === 'primary') {
-        buttonClass += " btn-primary"
+        buttonClass += " components-btn--primary"
     } else if (type === 'secondary') {
-        buttonClass += " btn-secondary"
+        buttonClass += " components-btn--secondary"
     }
 
     if (size === 'small') {
-        buttonClass += " btn-small"
+        buttonClass += " components-btn--small"
     } else if (size === 'normal') {
-        buttonClass += " btn-normal"
+        buttonClass += " components-btn--normal"
     }
 
     return <button className={buttonClass}>{children}</button>;
