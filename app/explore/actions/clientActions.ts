@@ -1,12 +1,25 @@
 'use client'
 function getUserLocation() {
     const userLocationPromise = new Promise<{ lat: number, lon: number } | null>((resolve, reject) => {
-        return navigator.geolocation.getCurrentPosition((position) => {
-            resolve({ lat: position.coords.latitude, lon: position.coords.longitude })
-        }, (error) => {
-            resolve(null)
-        });
-    });
+
+        const successCallback = (position: GeolocationPosition) => {
+            resolve({ lat: position.coords.latitude, lon: position.coords.longitude });
+        }
+
+        const errorCallback = (error: GeolocationPositionError) => {
+            resolve(null);
+        }
+
+        return navigator.geolocation.getCurrentPosition(
+            successCallback,
+            errorCallback,
+            {
+                enableHighAccuracy: true,
+                maximumAge: 10000 //10 seconds
+            }
+        );
+    }
+    );
 
     return userLocationPromise;
 }
