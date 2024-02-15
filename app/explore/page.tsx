@@ -19,6 +19,7 @@ function NearbyAttractions() {
     //TODO: Add a method to check the received data accuracy and promt the user to enable GPS to get a more accurate location
     //TODO: Handle the case when geolocation is not supported by the browser
     //todo: Check warning, violation only request geolocalitation in response to user gesture
+    //Add loading state
     const [nearbyAttractions, setNearbyAttractions] = useState([])
     const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(true)
     const [userLocation, setUserLocation] = useState<{ lat: number, lon: number } | null>(null)
@@ -65,7 +66,7 @@ function NearbyAttractions() {
             <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
                 <header className="txt-section-label">Nearby attractions</header>
                 <p className="txt-main-text-medium pt-ds-32">Enable location permission to get nearby attractions.</p>
-                <p className="txt-main-text-medium">If you don't know how <a href="https://robots.net/tech/how-do-i-enable-location-permission-in-my-browser/#google_vignette" target="_blank" className="text-ds-green-500">check this link</a></p>
+                <p className="txt-main-text-medium">If you don&apos;t know how <a href="https://robots.net/tech/how-do-i-enable-location-permission-in-my-browser/#google_vignette" target="_blank" className="text-ds-green-500">check this link</a></p>
             </Section>
         );
     }
