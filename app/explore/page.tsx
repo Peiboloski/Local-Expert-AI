@@ -20,7 +20,7 @@ function NearbyAttractions() {
     //TODO: Handle the case when geolocation is not supported by the browser
     //todo: Check warning, violation only request geolocalitation in response to user gesture
     //Add loading state
-    const [nearbyAttractions, setNearbyAttractions] = useState([])
+    const [nearbyAttractions, setNearbyAttractions] = useState<null | []>(null)
     const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(true)
     const [userLocation, setUserLocation] = useState<{ lat: number, lon: number } | null>(null)
 
@@ -29,7 +29,6 @@ function NearbyAttractions() {
     useEffect(() => {
         const checkLocationPermission = async () => {
             const permissionGranted = await getIsLocationPermissionGranted();
-            console.log("IS PERMISSION GRANTED", permissionGranted);
             setIsLocationPermissionGranted(permissionGranted);
             watchLocationPermissionChange((permissionGranted) => {
                 setIsLocationPermissionGranted(permissionGranted);
@@ -71,8 +70,22 @@ function NearbyAttractions() {
         );
     }
 
-    if (nearbyAttractions.length === 0) {
-        return null;
+    if (nearbyAttractions !== null && nearbyAttractions.length === 0) {
+        return (
+            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+                <header className="txt-section-label">Nearby attractions</header>
+                <p className="txt-main-text-medium pt-ds-32">No nearby attractions found</p>
+            </Section>
+        );
+    }
+
+    if (!nearbyAttractions) {
+        return (
+            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+                <header className="txt-section-label">Nearby attractions</header>
+                <p className="txt-main-text-medium pt-ds-32">Loading...</p>
+            </Section>
+        );
     }
 
     return (
