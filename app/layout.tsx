@@ -23,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={spaceGrotestFont.className}>{
-        <div className="bg-ds-green-100 min-h-screen">
+        <div className="bg-ds-green-100 min-h-screen grid grid-rows-[auto,1fr]">
           <Header />
-          {children}
+          <div className="w-100%">
+            {children}
+          </div>
         </div>
       }</body>
     </html>

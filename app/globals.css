@@ -38,7 +38,7 @@
   }
 
   .txt-paragraph {
-    @apply text-ds-16 font-regular;
+    @apply text-ds-16 font-normal;
   }
 }
 
