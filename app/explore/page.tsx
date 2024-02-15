@@ -1,9 +1,13 @@
+'use client'
 import Link from "next/link";
-import { ButtonLink } from "../_components/atoms/button";
 import Section from "../_components/atoms/section";
 import ArrowRight from "../_components/icons/small/arrowRight";
+import { useEffect, useState } from "react";
+import { getIsLocationPermissionGranted, getUserLocation, watchLocationPermissionChange } from "./actions/clientActions";
+import { fetchNearbyAttractions } from "./actions/serverActions";
+import { watch } from "fs";
 
-export default async function Home() {
+export default function Page() {
     return (
         <div className="flex flex-col mx-auto">
             <NearbyAttractions />
@@ -11,8 +15,61 @@ export default async function Home() {
     );
 }
 
-async function NearbyAttractions() {
-    const nearbyAttractions = await fetchNearbyAttractions();
+function NearbyAttractions() {
+    //TODO: Add a method to check the received data accuracy and promt the user to enable GPS to get a more accurate location
+    //TODO: Handle the case when geolocation is not supported by the browser
+    //todo: Check warning, violation only request geolocalitation in response to user gesture
+    const [nearbyAttractions, setNearbyAttractions] = useState([])
+    const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(true)
+    const [userLocation, setUserLocation] = useState<{ lat: number, lon: number } | null>(null)
+
+
+    //Get user location when component mounts
+    useEffect(() => {
+        const checkLocationPermission = async () => {
+            const permissionGranted = await getIsLocationPermissionGranted();
+            console.log("IS PERMISSION GRANTED", permissionGranted);
+            setIsLocationPermissionGranted(permissionGranted);
+            watchLocationPermissionChange((permissionGranted) => {
+                setIsLocationPermissionGranted(permissionGranted);
+                getUserLocation().then((location) => {
+                    setUserLocation(location);
+                }
+                );
+            }
+            );
+        }
+
+        checkLocationPermission();
+
+        getUserLocation().then((location) => {
+            setUserLocation(location);
+        });
+    }, []);
+
+
+    //Fetch nearby attractions when user location changes
+    useEffect(() => {
+        if (userLocation) {
+            const fetchNearbyAttractionsAsync = async () => {
+                const attractions = await fetchNearbyAttractions(userLocation.lat.toString(), userLocation.lon.toString());
+                setNearbyAttractions(attractions);
+            }
+            fetchNearbyAttractionsAsync();
+        }
+    }, [userLocation]);
+
+
+    if (!isLocationPermissionGranted) {
+        return (
+            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+                <header className="txt-section-label">Nearby attractions</header>
+                <p className="txt-main-text-medium pt-ds-32">Enable location permission to get nearby attractions.</p>
+                <p className="txt-main-text-medium">If you don't know how <a href="https://robots.net/tech/how-do-i-enable-location-permission-in-my-browser/#google_vignette" target="_blank" className="text-ds-green-500">check this link</a></p>
+            </Section>
+        );
+    }
+
     if (nearbyAttractions.length === 0) {
         return null;
     }
@@ -51,27 +108,3 @@ const AttractionCard = ({ title, distance }: AttractionCardProps) => {
         </li>
     );
 };
-
-const fetchNearbyAttractions = async () => {
-    //TODO: Add error handling
-    //TODO: Extract endpoint call to a service
-    const config = {
-        "api-version": '1.0',
-        limit: '10',
-        "subscription-key": process.env.AZURE_MAPS_API_KEY || '',
-        language: 'en',
-        "opening-hours": 'nextSevenDays',
-        lat: '42.341106',
-        lon: '-3.701991',
-        radius: '200',//radius in meters to the provided location
-        query: 'important tourist attraction'
-    };
-    const params = new URLSearchParams(config).toString();
-    const response = await fetch(`https://atlas.microsoft.com/search/poi/category/json?${params}`);
-    //error handling
-    if (!response.ok) {
-        return []
-    }
-    const nearbyAttractions = await response.json();
-    return nearbyAttractions.results;
-}
