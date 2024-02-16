@@ -5,7 +5,16 @@ import ArrowRight from "../_components/icons/small/arrowRight";
 import Section from "../_components/atoms/section";
 import Link from "next/link";
 import { Button } from "../_components/atoms/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import OpenAI from "openai";
+import { getAssistantMessage } from "./actions/serverActions";
+
+
+interface MessageInterface {
+    isUserMessage: boolean,
+    message: string
+}
 
 export default function ChatPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const {
@@ -16,7 +25,18 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
         country
     } = searchParams
 
-    const [messages, setMessages] = useState<{ isUserMessage: boolean, message: string }[]>([]);
+    const [messages, setMessages] = useState<MessageInterface[]>([]);
+    const [isAssistantTyping, setIsAssistantTyping] = useState(true);
+
+    //Get first assistant message
+    useEffect(() => {
+        const setAssistantMessage = async () => {
+            const message = await getAssistantMessage({ title: title as string, municipality: municipality as string, countrySecondarySubdivision: countrySecondarySubdivision as string, countrySubdivision: countrySubdivision as string, country: country as string })
+            setMessages([...messages, { isUserMessage: false, message }]);
+            setIsAssistantTyping(false);
+        }
+        setAssistantMessage();
+    }, []);
 
     const handleSendMessage = (message: string) => {
         setMessages([...messages, { isUserMessage: true, message }]);
@@ -26,7 +46,7 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
         <div className="flex flex-col mx-auto h-[100%]" >
             <ChatHeader title={title as string} />
             <Chat messages={messages} />
-            <ChatTextInput onMessage={handleSendMessage} />
+            <ChatTextInput shouldBeDisabled={isAssistantTyping} onMessage={handleSendMessage} />
         </div>
     );
 }
@@ -48,7 +68,7 @@ function ChatHeader({ title }: { title: string }) {
     );
 }
 
-function Chat({ messages }: { messages: [{ isUserMessage: boolean, message: string }] }) {
+function Chat({ messages }: { messages: { isUserMessage: boolean, message: string }[] }) {
     return (<Section wrapperClassName="bg-ds-grey-100 flex-grow" noExpandedBackground>
         <div className="inline-flex flex-col flex-col pt-ds-24 pb-ds-32 gap-ds-24 mr-auto w-[100%] h-[100%]" >
             {messages.map((message, index) => <ChatMessage key={index} isUserMessage={message.isUserMessage}>{message.message}</ChatMessage>)}
