@@ -1,5 +1,6 @@
 'use server'
 import OpenAI from "openai";
+import { MessageInterface } from "../types/types";
 
 interface getAssistantMessageProps {
     title: string,
@@ -7,45 +8,27 @@ interface getAssistantMessageProps {
     countrySecondarySubdivision: string,
     countrySubdivision: string,
     country: string
+    messages: MessageInterface[]
 }
 
-const getAssistantMessage = async ({ title, municipality, countrySecondarySubdivision, countrySubdivision, country }: getAssistantMessageProps) => {
-    return "MOCKED ASSISTANT MESSAGE"
+const getAssistantMessage = async ({ title, municipality, countrySecondarySubdivision, countrySubdivision, country, messages }: getAssistantMessageProps) => {
+    return 'MOCKED RESPONSE';
+
+    const systemMessage =
+        `You are a local guide in ${municipality}, ${countrySubdivision}, ${country}, give main information about ${title} as if you where talking to a tourist in front of the ${title}.Take into account that you are probably in front of the monument.Please respond in HTML format, you can use bullet points, paragraphs and bold text to make the information more readable.`
+
+
+    const useGpt4 = false;
+    const model = useGpt4 ? "gpt-4-turbo-preview" : "gpt-3.5-turbo";
     const openAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const assistantMessage = await openAI.chat.completions.create({
-        messages: [{ role: "system", content: `You are a local guide in ${municipality}, ${countrySecondarySubdivision}, ${countrySubdivision}, ${country}, give main information about ${title}` }],
-        model: "gpt-3.5-turbo",
+        model: "gpt-3.5-turbo-0125",
+        messages: [
+            { role: 'system', content: systemMessage },
+            ...messages.map(message => ({ role: message.role, content: message.conent }))
+        ]
     });
     return assistantMessage.choices[0].message.content || '';
-}
-
-
-
-
-
-const fetchNearbyAttractions = async (lat: string, lon: string) => {
-    //TODO: Add error handling
-    //TODO: Extract endpoint call to a service
-    //TODO: Add types
-    const config = {
-        "api-version": '1.0',
-        limit: '10',
-        "subscription-key": process.env.AZURE_MAPS_API_KEY || '',
-        language: 'en',
-        "opening-hours": 'nextSevenDays',
-        lat: lat,
-        lon: lon,
-        radius: '5000',//radius in meters to the provided location
-        query: 'important tourist attraction'
-    };
-    const params = new URLSearchParams(config).toString();
-    const response = await fetch(`https://atlas.microsoft.com/search/poi/category/json?${params}`);
-    //error handling
-    if (!response.ok) {
-        return []
-    }
-    const nearbyAttractions = await response.json();
-    return nearbyAttractions.results;
 }
 
 export { getAssistantMessage }

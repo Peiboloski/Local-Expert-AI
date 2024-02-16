@@ -1,20 +1,15 @@
 'use client';
-import { useParams } from "next/navigation";
-import { title } from "process";
 import ArrowRight from "../_components/icons/small/arrowRight";
 import Section from "../_components/atoms/section";
 import Link from "next/link";
 import { Button } from "../_components/atoms/button";
 import { useEffect, useRef, useState } from "react";
 
-import OpenAI from "openai";
 import { getAssistantMessage } from "./actions/serverActions";
+import { MessageInterface } from "./types/types";
+import DOMPurify from 'dompurify';
 
-
-interface MessageInterface {
-    isUserMessage: boolean,
-    message: string
-}
+import './styles/chatStyles.scss';
 
 export default function ChatPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const {
@@ -28,18 +23,22 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
     const [messages, setMessages] = useState<MessageInterface[]>([]);
     const [isAssistantTyping, setIsAssistantTyping] = useState(true);
 
+    const setAssistantMessage = async () => {
+        const message = await getAssistantMessage({ messages, title: title as string, municipality: municipality as string, countrySecondarySubdivision: countrySecondarySubdivision as string, countrySubdivision: countrySubdivision as string, country: country as string })
+        setMessages([...messages, { role: 'assistant', conent: message }]);
+        setIsAssistantTyping(false);
+    }
+
     //Get first assistant message
     useEffect(() => {
-        const setAssistantMessage = async () => {
-            const message = await getAssistantMessage({ title: title as string, municipality: municipality as string, countrySecondarySubdivision: countrySecondarySubdivision as string, countrySubdivision: countrySubdivision as string, country: country as string })
-            setMessages([...messages, { isUserMessage: false, message }]);
-            setIsAssistantTyping(false);
+        if (messages.length === 0 || messages[messages.length - 1].role === 'user') {
+            setIsAssistantTyping(true);
+            setAssistantMessage();
         }
-        setAssistantMessage();
-    }, []);
+    }, [messages]);
 
     const handleSendMessage = (message: string) => {
-        setMessages([...messages, { isUserMessage: true, message }]);
+        setMessages([...messages, { role: 'user', conent: message }]);
     }
 
     return (
@@ -82,7 +81,7 @@ function Chat({ messages, isAssistantTyping }: { messages: MessageInterface[], i
     return (
         <Section wrapperClassName="bg-ds-grey-100 flex-grow overflow-scroll" noExpandedBackground>
             <div className="inline-flex flex-col flex-col pt-ds-24 pb-ds-32 gap-ds-24 mr-auto w-[100%] h-[100%]">
-                {messages.map((message, index) => <ChatMessage key={index} isUserMessage={message.isUserMessage}>{message.message}</ChatMessage>)}
+                {messages.map((message, index) => <ChatMessage key={index} isUserMessage={message.role === 'user'}>{message.conent}</ChatMessage>)}
                 {isAssistantTyping && <ChatMessage isUserMessage={false}>Typing...</ChatMessage>}
                 <div ref={messagesEndRef} />
             </div>
@@ -91,9 +90,16 @@ function Chat({ messages, isAssistantTyping }: { messages: MessageInterface[], i
 }
 
 function ChatMessage({ isUserMessage, children }: { isUserMessage?: boolean, children: React.ReactNode }) {
+    // Sanitize the incoming HTML string
+    const sanitizedHtml = DOMPurify.sanitize(children as string);
+
+    // Now safely set the sanitized HTML
+    const createMarkup = () => ({ __html: sanitizedHtml });
+
+
     return (
         <div className={`p-ds-12 ${isUserMessage ? "bg-ds-green-200 ml-auto" : "bg-ds-grey-200 mr-auto"} rounded-[12px] flex-grow-0 txt-paragraph`}>
-            {children}
+            <div className="chat-styles" dangerouslySetInnerHTML={createMarkup()} />
         </div>
     )
 }
