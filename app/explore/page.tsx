@@ -97,6 +97,10 @@ function NearbyAttractions() {
                         key={attraction.id}
                         title={attraction.poi.name}
                         distance={Math.round(attraction.dist)}
+                        municipality={attraction.address.municipality}
+                        countrySecondarySubdivision={attraction.address.countrySecondarySubdivision}
+                        countrySubdivision={attraction.address.countrySubdivision}
+                        country={attraction.address.country}
                     />
                 ))}
             </ul>
