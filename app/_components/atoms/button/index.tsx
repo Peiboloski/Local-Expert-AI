@@ -7,9 +7,10 @@ type ButtonProps = {
     size: 'normal' | 'small';
     withArrow?: boolean;
     children: React.ReactNode;
+    disabled?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ type = 'primary', size = 'normal', children }) => {
+const Button: React.FC<ButtonProps> = ({ type = 'primary', size = 'normal', children, disabled, ...props }) => {
 
     let buttonClass = "components-btn"
 
@@ -25,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({ type = 'primary', size = 'normal', chil
         buttonClass += " components-btn--normal"
     }
 
-    return <button className={buttonClass}>{children}</button>;
+    return <button className={buttonClass} {...props}>{children}</button>;
 };
 
 type ButtonLinkProps = ButtonProps & {
