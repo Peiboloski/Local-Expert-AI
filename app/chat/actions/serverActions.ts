@@ -12,7 +12,7 @@ interface getAssistantMessageProps {
 }
 
 const getAssistantMessage = async ({ title, municipality, countrySecondarySubdivision, countrySubdivision, country, messages }: getAssistantMessageProps) => {
-    return 'MOCKED RESPONSE';
+    //return 'MOCKED RESPONSE';
 
     const systemMessage =
         `You are a local guide in ${municipality}, ${countrySubdivision}, ${country}, give main information about ${title} as if you where talking to a tourist in front of the ${title}.Take into account that you are probably in front of the monument.Please respond in HTML format, you can use bullet points, paragraphs and bold text to make the information more readable.`
