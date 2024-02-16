@@ -5,7 +5,7 @@ import ArrowRight from "../_components/icons/small/arrowRight";
 import Section from "../_components/atoms/section";
 import Link from "next/link";
 import { Button } from "../_components/atoms/button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import OpenAI from "openai";
 import { getAssistantMessage } from "./actions/serverActions";
@@ -43,10 +43,12 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
     }
 
     return (
-        <div className="flex flex-col mx-auto h-[100%]" >
-            <ChatHeader title={title as string} />
-            <Chat messages={messages} />
-            <ChatTextInput shouldBeDisabled={isAssistantTyping} onMessage={handleSendMessage} />
+        <div className="relative h-[100%]">
+            <div className="absolute inset-0 flex flex-col mx-auto h-[100%]" >
+                <ChatHeader title={title as string} />
+                <Chat messages={messages} isAssistantTyping={isAssistantTyping} />
+                <ChatTextInput shouldBeDisabled={isAssistantTyping} onMessage={handleSendMessage} />
+            </div>
         </div>
     );
 }
@@ -68,12 +70,24 @@ function ChatHeader({ title }: { title: string }) {
     );
 }
 
-function Chat({ messages }: { messages: { isUserMessage: boolean, message: string }[] }) {
-    return (<Section wrapperClassName="bg-ds-grey-100 flex-grow" noExpandedBackground>
-        <div className="inline-flex flex-col flex-col pt-ds-24 pb-ds-32 gap-ds-24 mr-auto w-[100%] h-[100%]" >
-            {messages.map((message, index) => <ChatMessage key={index} isUserMessage={message.isUserMessage}>{message.message}</ChatMessage>)}
-        </div>
-    </Section >)
+function Chat({ messages, isAssistantTyping }: { messages: MessageInterface[], isAssistantTyping: boolean }) {
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
+
+    return (
+        <Section wrapperClassName="bg-ds-grey-100 flex-grow overflow-scroll" noExpandedBackground>
+            <div className="inline-flex flex-col flex-col pt-ds-24 pb-ds-32 gap-ds-24 mr-auto w-[100%] h-[100%]">
+                {messages.map((message, index) => <ChatMessage key={index} isUserMessage={message.isUserMessage}>{message.message}</ChatMessage>)}
+                {isAssistantTyping && <ChatMessage isUserMessage={false}>Typing...</ChatMessage>}
+                <div ref={messagesEndRef} />
+            </div>
+        </Section>
+    );
 }
 
 function ChatMessage({ isUserMessage, children }: { isUserMessage?: boolean, children: React.ReactNode }) {

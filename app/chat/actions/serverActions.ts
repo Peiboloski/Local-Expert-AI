@@ -10,6 +10,7 @@ interface getAssistantMessageProps {
 }
 
 const getAssistantMessage = async ({ title, municipality, countrySecondarySubdivision, countrySubdivision, country }: getAssistantMessageProps) => {
+    return "MOCKED ASSISTANT MESSAGE"
     const openAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const assistantMessage = await openAI.chat.completions.create({
         messages: [{ role: "system", content: `You are a local guide in ${municipality}, ${countrySecondarySubdivision}, ${countrySubdivision}, ${country}, give main information about ${title}` }],
