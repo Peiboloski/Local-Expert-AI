@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { getAssistantMessage } from "./actions/serverActions";
 import { MessageInterface } from "./types/types";
-import { sanitize } from 'dompurify';
+import DOMPurify from "isomorphic-dompurify";
 
 import './styles/chatStyles.scss';
 
@@ -90,10 +90,9 @@ function Chat({ messages, isAssistantTyping }: { messages: MessageInterface[], i
 }
 
 function ChatMessage({ isUserMessage, children }: { isUserMessage?: boolean, children: React.ReactNode }) {
-    //TODO: Check type error DOMPurify.sanitize is not a function
 
     // Sanitize the incoming HTML string
-    const sanitizedHtml = sanitize(children as string)
+    const sanitizedHtml = DOMPurify.sanitize(children as string);
 
     // Now safely set the sanitized HTML
     const createMarkup = () => ({ __html: sanitizedHtml });
