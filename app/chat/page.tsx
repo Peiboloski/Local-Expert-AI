@@ -76,14 +76,25 @@ function Chat({ messages, isAssistantTyping }: { messages: MessageInterface[], i
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [messages]);
+    }, [messages, isAssistantTyping]);
+
+    //Add is assistant typing message at the end
+    const processedMessages = isAssistantTyping ? [...messages, { role: 'assistant', conent: 'Typing...' }] : messages;
+    const allExceptLastMessage = processedMessages.slice(0, processedMessages.length - 1);
+    const lastMessage = processedMessages[processedMessages.length - 1];
 
     return (
         <Section wrapperClassName="bg-ds-grey-100 flex-grow overflow-scroll" noExpandedBackground>
-            <div className="inline-flex flex-col flex-col pt-ds-24 pb-ds-32 gap-ds-24 mr-auto w-[100%] h-[100%]">
-                {messages.map((message, index) => <ChatMessage key={index} isUserMessage={message.role === 'user'}>{message.conent}</ChatMessage>)}
-                {isAssistantTyping && <ChatMessage isUserMessage={false}>Typing...</ChatMessage>}
-                <div ref={messagesEndRef} />
+            <div className="inline-flex flex-col pt-ds-24 pb-ds-32 gap-ds-24 mr-auto w-[100%] h-[100%]">
+                {allExceptLastMessage.map((message, index) => (
+                    <ChatMessage key={index} isUserMessage={message.role === 'user'}>
+                        {message.conent}
+                    </ChatMessage>
+                ))}
+                <div ref={messagesEndRef} className="mt-[-24px]" />
+                {lastMessage && <ChatMessage isUserMessage={lastMessage.role === 'user'}>
+                    {lastMessage.conent}
+                </ChatMessage>}
             </div>
         </Section>
     );
