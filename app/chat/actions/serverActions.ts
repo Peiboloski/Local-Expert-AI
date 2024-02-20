@@ -1,6 +1,7 @@
 'use server'
 import OpenAI from "openai";
 import { MessageInterface } from "../types/types";
+import logger from "@/logger";
 
 interface getAssistantMessageProps {
     title: string,
@@ -20,15 +21,24 @@ const getAssistantMessage = async ({ title, municipality, countrySecondarySubdiv
 
     const useGpt4 = false;
     const model = useGpt4 ? "gpt-4-turbo-preview" : "gpt-3.5-turbo";
-    const openAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const assistantMessage = await openAI.chat.completions.create({
-        model: "gpt-3.5-turbo-0125",
-        messages: [
-            { role: 'system', content: systemMessage },
-            ...messages.map(message => ({ role: message.role, content: message.conent }))
-        ]
-    });
-    return assistantMessage.choices[0].message.content || '';
+
+    try {
+        const openAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const assistantMessage = await openAI.chat.completions.create({
+            model: "gpt-3.5-turbo-0125",
+            messages: [
+                { role: 'system', content: systemMessage },
+                ...messages.map(message => ({ role: message.role, content: message.conent }))
+            ]
+        });
+        return assistantMessage.choices[0].message.content || '';
+    } catch (error) {
+        logger.error({
+            message: 'Error fetching assistant message',
+            error: error
+        });
+        return 'Error fetching assistant message';
+    }
 }
 
 export { getAssistantMessage }
