@@ -6,7 +6,7 @@
     h4,
     h5,
     h6 {
-        @apply txt-main-text-medium mb-ds-16 text-ds-20;
+        @apply txt-main-text-medium mb-ds-16 text-ds-18;
     }
 
     p {
@@ -25,6 +25,10 @@
             position: absolute;
             left: 0;
         }
+    }
+
+    strong {
+        @apply txt-main-text-bold;
     }
 
 
