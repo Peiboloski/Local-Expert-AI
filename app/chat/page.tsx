@@ -21,7 +21,7 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
     } = searchParams
 
     const [messages, setMessages] = useState<MessageInterface[]>([]);
-    const [isAssistantTyping, setIsAssistantTyping] = useState(true);
+    const [isAssistantTyping, setIsAssistantTyping] = useState(false);
 
     const setAssistantMessage = async () => {
         const message = await getAssistantMessage({ messages, title: title as string, municipality: municipality as string, countrySecondarySubdivision: countrySecondarySubdivision as string, countrySubdivision: countrySubdivision as string, country: country as string })
@@ -29,13 +29,13 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
         setIsAssistantTyping(false);
     }
 
-    //Get first assistant message
+    //Initial message is called twice in development, because of the use of strict mode
     useEffect(() => {
-        if (messages.length === 0 || messages[messages.length - 1].role === 'user') {
+        if (!isAssistantTyping && (messages.length === 0 || (messages[messages.length - 1].role === 'user'))) {
             setIsAssistantTyping(true);
             setAssistantMessage();
         }
-    }, [messages]);
+    }, [messages, isAssistantTyping]);
 
     const handleSendMessage = (message: string) => {
         setMessages([...messages, { role: 'user', conent: message }]);
@@ -70,6 +70,7 @@ function ChatHeader({ title }: { title: string }) {
 }
 
 function Chat({ messages, isAssistantTyping }: { messages: MessageInterface[], isAssistantTyping: boolean }) {
+    //TODO: Scroll to message not working in mobile for user sent messages
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -136,7 +137,7 @@ function ChatTextInput({ onMessage, shouldBeDisabled }: { onMessage: (message: s
                 <input
                     className="bg-white rounded-[8px] p-ds-16 w-[100%] border-solid border-[1px] border-ds-grey-500 txt-main-text-medium"
                     type="text"
-                    placeholder="What else do you want to know?"
+                    placeholder={shouldBeDisabled ? "Waiting for assistant response..." : "What else do you want to know?"}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     disabled={shouldBeDisabled}
