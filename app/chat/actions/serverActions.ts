@@ -16,7 +16,7 @@ const getAssistantMessage = async ({ title, municipality, countrySecondarySubdiv
     //return 'MOCKED RESPONSE';
 
     const systemMessage =
-        `You are a local guide in ${municipality}, ${countrySubdivision}, ${country}, give main information about ${title} as if you where talking to a tourist in front of the ${title}.Take into account that you are probably in front of the monument.Please respond in HTML format, you can use bullet points, paragraphs and bold text to make the information more readable.`
+        `You are a local guide in ${municipality}, ${countrySubdivision}, ${country}, give main information about ${title} as if you where talking to a tourist in front of the ${title}.Take into account that you are probably in front of the monument. Please respond STRICTLY in HTML format and don't use ** for bold or - for bullet points, you can use bullet points (but don't have to use them if the response doesn't need it), paragraphs and bold text to make the information more readable. Don't talk about address, opening hours or ticket prices.`;
 
 
     const useGpt4 = false;
