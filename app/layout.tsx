@@ -14,6 +14,9 @@ const spaceGrotestFont = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Local Expert AI",
   description: "Your local guide right in your hands. Explore nearby attractions as if you had a local guide by your side.",
+  openGraph: {
+    siteName: "Local Expert AI",
+  },
 };
 
 export default function RootLayout({
