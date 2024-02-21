@@ -12,6 +12,7 @@ const spaceGrotestFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://localexpertai.com"),
   title: "Local Expert AI",
   description: "Your local guide right in your hands. Explore nearby attractions as if you had a local guide by your side.",
   openGraph: {
