@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Header from "./_components/molecules/header";
+import SetScreenMinHeight from "./_components/atoms/setScreenMinHeight";
 
 const spaceGrotestFont = Space_Grotesk({
   subsets: ["latin"],
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
   },
 };
 
+const appWrapperId = "app-wrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,12 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={spaceGrotestFont.className}>{
-        <div className="bg-ds-green-100 min-h-screen grid grid-rows-[auto,1fr]">
+        <div id={appWrapperId} className="bg-ds-green-100 min-h-screen grid grid-rows-[auto,1fr]">
           <Header />
           <div className="w-100%">
             {children}
           </div>
           <SpeedInsights />
+          <SetScreenMinHeight id={appWrapperId} />
         </div>
       }</body>
     </html>
