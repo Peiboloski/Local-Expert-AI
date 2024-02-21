@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({ type = 'primary', size = 'normal', chil
         buttonClass += " components-btn--normal"
     }
 
-    return <button className={buttonClass} {...props}>{children}</button>;
+    return <button className={buttonClass} disabled={disabled} {...props}>{children}</button>;
 };
 
 type ButtonLinkProps = ButtonProps & {

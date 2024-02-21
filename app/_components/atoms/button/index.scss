@@ -40,6 +40,26 @@
     &.components-btn--small {
         @include buttonStyles('ds-green-500', 0px);
     }
+
+    &:disabled,
+    &:disabled:hover,
+    &:disabled:active {
+        @apply txt-button-text--disabled border-ds-green-200;
+
+        /*Make inside svg color to grey*/
+        svg {
+            fill: theme('colors.ds-grey-600');
+
+            path {
+                fill: theme('colors.ds-grey-600');
+            }
+        }
+
+        box-shadow: none;
+        box-shadow: none;
+        transform: none;
+
+    }
 }
 
 .components-btn--secondary {
@@ -51,5 +71,13 @@
 
     &.components-btn--small {
         @include buttonStyles('ds-black', 0px);
+    }
+
+    &:disabled,
+    &:disabled:hover,
+    &:disabled:active {
+        @apply txt-button-text--disabled border-ds-grey-200;
+        box-shadow: none;
+        transform: none;
     }
 }

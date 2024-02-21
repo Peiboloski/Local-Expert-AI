@@ -29,8 +29,16 @@
     @apply text-ds-16 font-medium text-ds-grey-800;
   }
 
+  .txt-main-text-bold {
+    @apply text-ds-16 font-bold text-ds-grey-800;
+  }
+
   .txt-button-text {
     @apply text-ds-16 text-ds-black font-semibold tracking-[1px];
+  }
+
+  .txt-button-text--disabled {
+    @apply text-ds-16 text-ds-grey-700 font-semibold tracking-[1px];
   }
 
   .txt-button-small-text {
