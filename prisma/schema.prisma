@@ -8,15 +8,12 @@ datasource db {
 }
 
 model City {
-  id               Int          @id @default(autoincrement())
-  name             String
-  country          String
-  formattedAddress String
-  description      String
-  bbox             Float[]
-  latitude         Float
-  longitude        Float
-  attractions      Attraction[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  country     String
+  description String?
+  bbox        Float[]
+  attractions Attraction[]
 }
 
 model Attraction {
