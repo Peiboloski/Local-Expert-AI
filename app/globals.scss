@@ -48,10 +48,50 @@
   .txt-paragraph {
     @apply text-ds-16 font-normal;
   }
+
+  .txt-tab-text {
+    @apply text-ds-12 text-ds-black font-medium tracking-[1px];
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.rich-text-injected-styles {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply txt-main-text-medium mb-ds-16 text-ds-18;
+  }
+
+  p {
+    @apply mb-ds-16;
+  }
+
+  li {
+    @apply mb-ds-16;
+    /* add bullet point decoration */
+    list-style: none;
+    position: relative;
+    padding-left: 1em;
+
+    &::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  strong {
+    @apply txt-main-text-bold;
+  }
+
+
 }

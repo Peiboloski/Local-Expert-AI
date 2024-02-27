@@ -9,8 +9,6 @@ import { getAssistantMessage } from "./actions/serverActions";
 import { MessageInterface } from "./types/types";
 import DOMPurify from "isomorphic-dompurify";
 
-import './styles/chatStyles.scss';
-
 export default function ChatPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const {
         title,
@@ -112,7 +110,7 @@ function ChatMessage({ isUserMessage, children }: { isUserMessage?: boolean, chi
 
     return (
         <div className={`p-ds-12 ${isUserMessage ? "bg-ds-green-200 ml-auto" : "bg-ds-grey-200 mr-auto"} rounded-[12px] flex-grow-0 txt-paragraph`}>
-            <div className="chat-styles" dangerouslySetInnerHTML={createMarkup()} />
+            <div className="rich-text-injected-styles" dangerouslySetInnerHTML={createMarkup()} />
         </div>
     )
 }

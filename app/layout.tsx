@@ -1,7 +1,7 @@
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
-import "./globals.css";
+import "./globals.scss";
 import Header from "./_components/molecules/header";
 import SetScreenMinHeight from "./_components/atoms/setScreenMinHeight";
 
