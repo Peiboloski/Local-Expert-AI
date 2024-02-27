@@ -6,8 +6,11 @@
     "node": "18.x"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "npm run project:check && next dev",
     "build": "npm run project:check && next lint && next build",
+    "vercel-build": "npm run project:check && prisma generate && prisma migrate deploy && next build",
+    "prisma:generate": "prisma generate",
     "start": "npm run project:check && next start",
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
@@ -17,6 +20,7 @@
   "dependencies": {
     "@logtail/node": "^0.4.19",
     "@logtail/winston": "^0.4.19",
+    "@prisma/client": "^5.10.2",
     "@sentry/nextjs": "^7.101.1",
     "@vercel/speed-insights": "^1.0.10",
     "dompurify": "^3.0.8",
@@ -24,6 +28,7 @@
     "isomorphic-dompurify": "^2.3.0",
     "next": "14.1.0",
     "openai": "^4.28.0",
+    "prisma": "^5.10.2",
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.70.0",
