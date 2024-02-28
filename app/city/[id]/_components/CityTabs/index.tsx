@@ -30,8 +30,6 @@ const CityTabs = ({ cityId }: { cityId: number }) => {
 }
 
 const Tab = ({ children, path, index, active }: { children: React.ReactNode, path: string, index: number, active: boolean }) => {
-    console.log('path', path)
-    console.log('active', active)
     return (
         <HeadlessTab value={index} className='bg-[transparent]'>
             <Link

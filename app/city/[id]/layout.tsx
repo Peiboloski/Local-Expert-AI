@@ -8,7 +8,7 @@ import { TabPanel as HeadlessTabPanel } from '@mui/base/TabPanel';
 import { Tabs as HeadlessTabs } from '@mui/base/Tabs';
 import CityTabs from "./_components/CityTabs";
 
-export default async function CityLoayout({ children, params }: { children: React.ReactNode, params: { id: string }, pathname: string }) {
+export default async function CityLoayout({ children, params }: { children: React.ReactNode, params: { id: string } }) {
     const { id } = params
     const idAsNumber = parseInt(id)
 
