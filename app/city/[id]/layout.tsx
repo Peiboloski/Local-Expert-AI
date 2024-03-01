@@ -1,11 +1,6 @@
 import Section from "@/app/_components/atoms/section";
 import { getCityById } from "@/app/_database/city"
-import Link from "next/link";
 import { redirect } from 'next/navigation';
-import { Tab as HeadlessTab } from '@mui/base/Tab';
-import { TabsList as HeadlessTabsList } from '@mui/base/TabsList';
-import { TabPanel as HeadlessTabPanel } from '@mui/base/TabPanel';
-import { Tabs as HeadlessTabs } from '@mui/base/Tabs';
 import CityTabs from "./_components/CityTabs";
 
 export default async function CityLoayout({ children, params }: { children: React.ReactNode, params: { id: string } }) {

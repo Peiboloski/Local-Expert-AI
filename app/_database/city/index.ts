@@ -1,12 +1,13 @@
 import prisma from "@/db"
-import { City } from "@prisma/client"
+import { Attraction, City } from "@prisma/client"
 
-const getCityByBbox = async (bbox: []) => {
+const getCityByBbox = async ({ northBound, southBound, eastBound, westBound }: { northBound: number, southBound: number, eastBound: number, westBound: number }) => {
     const city = prisma.city.findFirst({
         where: {
-            bbox: {
-                hasEvery: bbox
-            }
+            northBound: northBound,
+            southBound: southBound,
+            eastBound: eastBound,
+            westBound: westBound
         }
     })
 
@@ -21,6 +22,18 @@ const getCityById = async (id: number) => {
     })
 
     return city
+}
+
+const getCityAttractions = async (id: number): Promise<Attraction[]> => {
+    const city = await prisma.city.findFirst({
+        where: {
+            id: id
+        },
+        include: {
+            attractions: true
+        }
+    })
+    return city?.attractions || []
 }
 
 const createCity = async (city: City) => {
@@ -47,6 +60,7 @@ const updateCityDescription = async ({ id, description }: { id: number, descript
 export {
     getCityById,
     getCityByBbox,
+    getCityAttractions,
     createCity,
     updateCityDescription
 }

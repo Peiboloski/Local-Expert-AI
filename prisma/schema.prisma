@@ -11,8 +11,11 @@ model City {
   id          Int          @id @default(autoincrement())
   name        String
   country     String
-  description String?
-  bbox        Float[]
+  description String
+  northBound  Float
+  southBound  Float
+  eastBound   Float
+  westBound   Float
   attractions Attraction[]
 }
 

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getIsLocationPermissionGranted, getUserLocation, watchLocationPermissionChange } from "./actions/clientActions";
 import { fetchNearbyAttractions } from "./actions/serverActions";
 import { watch } from "fs";
+import AttractionCard from "../_components/atoms/attractionCard";
 
 export default function Page() {
     return (
@@ -106,35 +107,3 @@ function Explore() {
         </Section>
     );
 }
-
-
-interface AttractionCardProps {
-    title: string;
-    distance: number;
-    municipality: string;
-    countrySecondarySubdivision: string;
-    countrySubdivision: string;
-    country: string;
-}
-const AttractionCard = ({ title, distance, municipality, countrySecondarySubdivision, countrySubdivision, country }: AttractionCardProps) => {
-
-    const UrlParams = new URLSearchParams({
-        title: title,
-        municipality: municipality,
-        countrySecondarySubdivision: countrySecondarySubdivision,
-        countrySubdivision: countrySubdivision,
-        country: country
-    });
-
-    return (
-        <li className="flex flex-col bg-ds-white p-ds-16 rounded-[8px] border border-solid border-ds-grey-700 hover:bg-ds-green-300">
-            <Link href={`/chat?${UrlParams.toString()}`} className="flex flex-row justify-between items-center gap-ds-12">
-                <div className="flex flex-col gap-ds-12">
-                    <h2 className="txt-main-text-medium">{title}</h2>
-                    <p className="txt-main-text-medium text-ds-grey-600">{`${distance} m`}</p>
-                </div>
-                <ArrowRight className="flex-shrink-0" />
-            </Link>
-        </li>
-    );
-};

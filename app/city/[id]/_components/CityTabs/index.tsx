@@ -12,7 +12,7 @@ const CityTabs = ({ cityId }: { cityId: number }) => {
     const pathname = usePathname()
     const tabs = [
         { name: 'Summary', path: `/city/${cityId}/summary` },
-        { name: 'Must visit', path: `/city/${cityId}/must-visit` },
+        { name: 'Must visit', path: `/city/${cityId}/must` },
         { name: 'Food', path: `/city/${cityId}/food` },
     ]
 
