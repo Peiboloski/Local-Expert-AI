@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Attraction" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "latitude" DROP NOT NULL,
+ALTER COLUMN "longitude" DROP NOT NULL,
+ALTER COLUMN "mustVisit" DROP NOT NULL,
+ALTER COLUMN "shortDescription" DROP NOT NULL;

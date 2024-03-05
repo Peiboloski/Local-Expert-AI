@@ -36,6 +36,25 @@ const getCityAttractions = async (id: number): Promise<Attraction[]> => {
     return city?.attractions || []
 }
 
+const setMustVisitAttractions = async (cityId: number, attractions: Attraction[]) => {
+    const updatedCity = prisma.city.update({
+        where: {
+            id: cityId
+        },
+        data: {
+            attractions: {
+                create: attractions.map(attraction => ({
+                    name: attraction.name,
+                    shortDescription: attraction.shortDescription,
+                } as Attraction)
+                ),
+            }
+        },
+    })
+
+    return updatedCity
+}
+
 const createCity = async (city: City) => {
     const createdCity = prisma.city.create({
         data: city
@@ -62,7 +81,8 @@ export {
     getCityByBbox,
     getCityAttractions,
     createCity,
-    updateCityDescription
+    updateCityDescription,
+    setMustVisitAttractions,
 }
 
 

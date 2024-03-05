@@ -20,13 +20,17 @@ model City {
 }
 
 model Attraction {
-  id          String  @id ///As received from Azure maps API
-  name        String
-  description String
-  city        City    @relation(fields: [cityId], references: [id])
-  cityId      Int
-  latitude    Float
-  longitude   Float
-  topLeft     Float[]
-  bottomRight Float[]
+  id               String   @id @default(uuid())
+  azureId          String   @unique
+  name             String
+  shortDescription String?
+  description      String?
+  city             City     @relation(fields: [cityId], references: [id])
+  cityId           Int
+  latitude         Float?
+  longitude        Float?
+  topLeft          Float[]
+  bottomRight      Float[]
+  mustVisit        Boolean? @default(false)
+  mustVisitOrder   Int?
 }

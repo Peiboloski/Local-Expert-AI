@@ -1,7 +1,8 @@
-import { fetchCityAttractionsFromAzure } from "@/app/_azureMapsQueries/getAllCityAttractions";
 import AttractionCard from "@/app/_components/atoms/attractionCard";
-import { getCityById, getCityAttractions } from "@/app/_database/city";
+import { getCityById, getCityAttractions, setMustVisitAttractions } from "@/app/_database/city";
 import { redirect } from "next/navigation";
+import { fetchCityMustVisitAttractions } from "@/app/_aiQueries";
+import { Attraction } from "@prisma/client";
 
 export default async function CitySummaryPage({ params }: { params: { id: string } }) {
     const { id } = params
@@ -14,10 +15,11 @@ export default async function CitySummaryPage({ params }: { params: { id: string
         return
     }
 
-    let cityAttractions = await getCityAttractions(idAsNumber)
+    let cityAttractions: Partial<Attraction[]> = await getCityAttractions(idAsNumber)
     if (!cityAttractions || cityAttractions.length === 0) {
         //Get city attractions from API
-        cityAttractions = await fetchCityAttractionsFromAzure(city)
+        cityAttractions = await fetchCityMustVisitAttractions({ city: city.name, country: city.country })
+        await setMustVisitAttractions(idAsNumber, cityAttractions)
     }
 
     return (
