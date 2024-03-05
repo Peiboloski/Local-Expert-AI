@@ -21,7 +21,7 @@ model City {
 
 model Attraction {
   id               String   @id @default(uuid())
-  azureId          String   @unique
+  azureId          String?  @unique
   name             String
   shortDescription String?
   description      String?

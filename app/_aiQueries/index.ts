@@ -2,7 +2,7 @@ import logger from "@/logger";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser, JsonOutputParser } from "@langchain/core/output_parsers";
-import { attractionsLlmFunctionName, attractionsLlmTool } from './llmFunctions';
+import { AttractionsLlmToolInputInterface, attractionsLlmFunctionName, attractionsLlmTool } from './llmFunctions';
 import { JsonOutputToolsParser, JsonKeyOutputFunctionsParser } from "langchain/output_parsers";
 
 
@@ -72,15 +72,14 @@ const fetchCityMustVisitAttractions = async ({ city, country }: { city: string, 
         const prompt = ChatPromptTemplate.fromMessages([
             ['system', systemMessage]
         ]);
-        const outputParser = new JsonKeyOutputFunctionsParser({
-            attrName: attractionsLlmFunctionName
-        });
+        const outputParser = new JsonOutputToolsParser();
 
         const chain = prompt.pipe(modelWithTools).pipe(outputParser);
         // Log time to fetch city description from Open AI
         const start = new Date().getTime();
-        const response = await chain.invoke({});
-        console.log("response", response)
+        const response: { type: string, args: Object }[] = await chain.invoke({});
+        const attractionsResponse = response.find((r) => r.type === attractionsLlmFunctionName)?.args as AttractionsLlmToolInputInterface;
+        const attractions = attractionsResponse?.attractions || [];
 
         const end = new Date().getTime();
         //time in seconds
@@ -89,7 +88,7 @@ const fetchCityMustVisitAttractions = async ({ city, country }: { city: string, 
             time: (end - start) / 1000
         });
 
-        return response;
+        return attractions;
 
     } catch (error) {
         logger.error({

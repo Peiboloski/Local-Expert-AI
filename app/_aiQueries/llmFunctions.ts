@@ -14,8 +14,8 @@ const attractionsLlmTool = {
     type: "function" as const,
     function: {
         name: attractionsLlmFunctionName,
-        description: "Set turistic attractions",
-        paramenters: zodToJsonSchema(attractionsLlmToolSchema),
+        description: "Set turistic attractions array with name and description for each attraction",
+        parameters: zodToJsonSchema(attractionsLlmToolSchema),
     }
 }
 

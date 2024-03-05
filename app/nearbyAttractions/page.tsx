@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getIsLocationPermissionGranted, getUserLocation, watchLocationPermissionChange } from "./actions/clientActions";
 import { fetchNearbyAttractions } from "./actions/serverActions";
 import { watch } from "fs";
-import AttractionCard from "../_components/atoms/attractionCard";
+import AttractionCard from "../_components/molecules/AttractionCard";
 
 export default function Page() {
     return (
