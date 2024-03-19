@@ -2,8 +2,9 @@ import logger from "@/logger";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser, JsonOutputParser } from "@langchain/core/output_parsers";
-import { AttractionsLlmToolInputInterface, attractionsLlmFunctionName, attractionsLlmTool } from './llmFunctions';
+import { AttractionsLlmToolInputInterface, FoodLlmToolInputInterface, attractionsLlmFunctionName, attractionsLlmTool, foodLlmFunctionName, foodLlmTool } from './llmFunctions';
 import { JsonOutputToolsParser, JsonKeyOutputFunctionsParser } from "langchain/output_parsers";
+import { Food } from "@prisma/client";
 
 
 enum ChatModel {
@@ -99,4 +100,43 @@ const fetchCityMustVisitAttractions = async ({ city, country }: { city: string, 
     }
 }
 
-export { getCityDescription, fetchCityMustVisitAttractions }
+const fetchCityMustEatFood = async ({ city, country }: { city: string, country: string }) => {
+    const systemMessage =
+        `Give a list with the main traditional meals in ${city}, ${country}. Give a short description of maximum 1000 characters for each one`;
+
+    try {
+        const modelWithTools = getChatModel(ChatModel.GPT3).bind({
+            tools: [foodLlmTool],
+            tool_choice: foodLlmTool,
+        })
+        const prompt = ChatPromptTemplate.fromMessages([
+            ['system', systemMessage]
+        ]);
+        const outputParser = new JsonOutputToolsParser();
+
+        const chain = prompt.pipe(modelWithTools).pipe(outputParser);
+        // Log time to fetch from Open AI
+        const start = new Date().getTime();
+        const response: { type: string, args: Object }[] = await chain.invoke({});
+        const mealsResponse = response.find((r) => r.type === foodLlmFunctionName)?.args as FoodLlmToolInputInterface;
+        const meals = mealsResponse?.meals || [];
+
+        const end = new Date().getTime();
+        //time in seconds
+        logger.info({
+            message: 'Time to fetch must try meal from Open AI',
+            time: (end - start) / 1000
+        });
+
+        return meals;
+
+    } catch (error) {
+        logger.error({
+            message: 'Error fetching city must try meals from Open AI',
+            error: error
+        });
+        return [];
+    }
+}
+
+export { getCityDescription, fetchCityMustVisitAttractions, fetchCityMustEatFood }

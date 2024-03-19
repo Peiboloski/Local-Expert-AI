@@ -1,6 +1,3 @@
-import Link from "next/link";
-import ArrowRight from "../../icons/small/arrowRight";
-import classNames from "classnames";
 import { Card, CardDescription, CardDistance, CardTitle } from "../../atoms/attractionCard";
 
 interface AttractionCardProps {

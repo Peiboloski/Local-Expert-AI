@@ -1,13 +1,13 @@
 'use client';
 import ArrowRight from "../_components/icons/small/arrowRight";
 import Section from "../_components/atoms/section";
-import Link from "next/link";
 import { Button } from "../_components/atoms/button";
 import { useEffect, useRef, useState } from "react";
 
 import { getAssistantMessage } from "./actions/serverActions";
 import { MessageInterface } from "./types/types";
 import DOMPurify from "isomorphic-dompurify";
+import { useRouter } from "next/navigation";
 
 export default function ChatPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const {
@@ -52,12 +52,14 @@ export default function ChatPage({ searchParams }: { searchParams: { [key: strin
 
 
 function ChatHeader({ title }: { title: string }) {
+
+    const router = useRouter();
     return (
         <Section wrapperClassName="bg-ds-grey-200" noExpandedBackground>
             <header className="flex flex-row justify-start items-center py-ds-24 gap-ds-24">
-                <Link href="/explore">
+                <button onClick={() => router.back()} aria-label="Go back to previous page">
                     <ArrowRight className="flex-shrink-0 rotate-180" />
-                </Link>
+                </button>
                 <div className="flex flex-col justify-center gap-ds-4">
                     <p className="txt-section-label text-ds-grey-800">LOCAL GUIDE</p>
                     <p className="txt-section-label text-ds-grey-600">{title}</p>

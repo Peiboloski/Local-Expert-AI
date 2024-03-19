@@ -2,7 +2,7 @@ import Link from "next/link";
 import ArrowRight from "../../icons/small/arrowRight";
 import classNames from "classnames";
 
-const Card = ({ link = null, children }: { link: string | null, children: any }) => {
+const Card = ({ link = null, children }: { link?: string | null, children: any }) => {
     const hasLink = link !== null;
     const linkClassName = classNames('flex flex-row justify-between items-center gap-ds-12')
     const CardWrapperComponent = hasLink ?
