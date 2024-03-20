@@ -16,7 +16,7 @@ export default async function CitySummaryPage({ params }: { params: { id: string
         return
     }
 
-    let cityFood: Partial<Food[]> = await getCityFood(idAsNumber)
+    let cityFood: Partial<Food>[] = await getCityFood(idAsNumber)
     if (!cityFood || cityFood.length === 0) {
         //Get city attractions from API
         cityFood = await fetchCityMustEatFood({ city: city.name, country: city.country })
