@@ -29,6 +29,8 @@ const getLocationCityPage = async (lat: string, lon: string) => {
     //reedirect to city page
     redirect(`/city/${databaseCity.id}/summary`);
 }
+//Function to fetch the typical food of a given location
+
 
 const getCityBboxFromFormattedName = async (formattedName: string) => {
     const config = {

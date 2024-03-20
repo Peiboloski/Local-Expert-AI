@@ -1,12 +1,12 @@
 'use client'
 import Link from "next/link";
-import Section from "../_components/atoms/section";
-import ArrowRight from "../_components/icons/small/arrowRight";
+import Section from "../../../_components/atoms/section";
+import ArrowRight from "../../../_components/icons/small/arrowRight";
 import { useEffect, useState } from "react";
 import { getIsLocationPermissionGranted, getUserLocation, watchLocationPermissionChange } from "./actions/clientActions";
 import { fetchNearbyAttractions } from "./actions/serverActions";
 import { watch } from "fs";
-import AttractionCard from "../_components/molecules/AttractionCard";
+import AttractionCard from "../../../_components/molecules/AttractionCard";
 
 export default function Page() {
     return (
@@ -62,7 +62,7 @@ function Explore() {
 
     if (!isLocationPermissionGranted) {
         return (
-            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+            <Section wrapperClassName="" className="flex flex-col p-ds-32">
                 <header className="txt-section-label">Nearby attractions</header>
                 <p className="txt-main-text-medium pt-ds-32">Enable location permission to get nearby attractions.</p>
                 <p className="txt-main-text-medium">If you don&apos;t know how <a href="https://robots.net/tech/how-do-i-enable-location-permission-in-my-browser/#google_vignette" target="_blank" className="text-ds-green-500">check this link</a></p>
@@ -72,7 +72,7 @@ function Explore() {
 
     if (nearbyAttractions !== null && nearbyAttractions.length === 0) {
         return (
-            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+            <Section wrapperClassName="" className="flex flex-col p-ds-32">
                 <header className="txt-section-label">Nearby attractions</header>
                 <p className="txt-main-text-medium pt-ds-32">No nearby attractions found</p>
             </Section>
@@ -81,7 +81,7 @@ function Explore() {
 
     if (!nearbyAttractions) {
         return (
-            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+            <Section wrapperClassName="" className="flex flex-col p-ds-32">
                 <header className="txt-section-label">Nearby attractions</header>
                 <p className="txt-main-text-medium pt-ds-32">Loading...</p>
             </Section>
@@ -89,7 +89,7 @@ function Explore() {
     }
 
     return (
-        <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+        <Section wrapperClassName="" className="flex flex-col p-ds-32">
             <header className="txt-section-label">Nearby attractions</header>
             <ul className="space-y-6 mt-6">
                 {nearbyAttractions.map((attraction: any) => (

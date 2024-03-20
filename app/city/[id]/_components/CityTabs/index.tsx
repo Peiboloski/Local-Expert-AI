@@ -14,6 +14,7 @@ const CityTabs = ({ cityId }: { cityId: number }) => {
         { name: 'Summary', path: `/city/${cityId}/summary` },
         { name: 'Must visit', path: `/city/${cityId}/must` },
         { name: 'Food', path: `/city/${cityId}/food` },
+        { name: 'Nearby attractions', path: `/city/${cityId}/nearbyAttractions` },
     ]
 
     const selectedTabIndex = tabs.findIndex(tab => tab.path === pathname)

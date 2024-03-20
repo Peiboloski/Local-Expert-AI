@@ -14,7 +14,7 @@ const fetchNearbyAttractions = async (lat: string, lon: string) => {
         "opening-hours": 'nextSevenDays',
         lat: lat,
         lon: lon,
-        radius: '5000',//radius in meters to the provided location
+        radius: '300',//radius in meters to the provided location
         query: 'important tourist attraction'
     };
     logger.info('Fetching nearby attractions');
