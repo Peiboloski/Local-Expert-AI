@@ -7,7 +7,7 @@
   },
   "scripts": {
     "postinstall": "prisma generate",
-    "dev": "npm run project:check &&lint:tsc && next dev",
+    "dev": "npm run project:check && npm run lint:tsc && next dev",
     "build": "npm run project:check && next lint && next build",
     "vercel-build": "npm run project:check && prisma generate && prisma migrate deploy && next build",
     "prisma:generate": "prisma generate",
