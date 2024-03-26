@@ -3,6 +3,7 @@ import Section from "../_components/atoms/section";
 import { useEffect, useState } from "react";
 import { getIsLocationPermissionGranted, getUserLocation, watchLocationPermissionChange } from "./actions/clientActions";
 import { getLocationCityPage } from "./actions/serverActions";
+import { LocationErrors } from "./actions/serverActionErrors";
 
 export default function Page() {
     return (
@@ -18,6 +19,7 @@ function Explore() {
     //Add loading state
     const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(true)
     const [userLocation, setUserLocation] = useState<{ lat: number, lon: number } | null>(null)
+    const [errorFetchingCity, setErrorFetchingCity] = useState<LocationErrors | null>(null)
 
 
     //Get user location when component mounts
@@ -45,9 +47,25 @@ function Explore() {
     //Set city when user location changes
     useEffect(() => {
         if (userLocation) {
-            getLocationCityPage(userLocation.lat.toString(), userLocation.lon.toString());
+            const getLocationCityPageWrapper = async () => {
+                const { error = null } = await getLocationCityPage(userLocation.lat.toString(), userLocation.lon.toString()) || {}
+                if (error) {
+                    setErrorFetchingCity(error)
+                }
+
+            }
+            getLocationCityPageWrapper();
         }
     }, [userLocation]);
+
+    const getLocationErrorPromtedToTheUser = () => {
+        switch (errorFetchingCity) {
+            case LocationErrors.NO_MUNICIPALITY_DETECTED:
+                return 'We can not load your location information as you are not in a municipality right now'
+            default:
+                return 'Error fetching city information. Try again refreshing the page.';
+        }
+    }
 
 
 
@@ -67,6 +85,16 @@ function Explore() {
             <p className="txt-main-text-medium pt-ds-32">Getting your location...</p>
         </Section>
     );
+
+    if (errorFetchingCity) {
+        return (
+            <Section wrapperClassName="bg-ds-grey-200" className="flex flex-col p-ds-32">
+                <p className="txt-main-text-medium pt-ds-32">
+                    {getLocationErrorPromtedToTheUser()}
+                </p>
+            </Section>
+        );
+    }
 
 
     return (
