@@ -15,7 +15,7 @@ const Card = ({ link = null, children }: { link?: string | null, children: any }
                 <div className="flex flex-col gap-ds-12">
                     {children}
                 </div>
-                <ArrowRight className="flex-shrink-0" />
+                {hasLink && <ArrowRight className="flex-shrink-0" />}
             </CardWrapperComponent>
         </li>
     )
