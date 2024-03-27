@@ -10,7 +10,12 @@ const Card = ({ link = null, children }: { link?: string | null, children: any }
         ({ children }: { children: any; }) => <div className={linkClassName}>{children}</div>;
 
     return (
-        <li className="flex flex-col bg-ds-white p-ds-16 rounded-[8px] border border-solid border-ds-grey-700 hover:bg-ds-green-300">
+        <li className={
+            classNames(
+                "flex flex-col bg-ds-white p-ds-16 rounded-[8px] border border-solid border-ds-grey-700",
+                hasLink && "hover:bg-ds-green-300"
+            )
+        }>
             <CardWrapperComponent>
                 <div className="flex flex-col gap-ds-12">
                     {children}
