@@ -6,7 +6,8 @@ const nodeExpectedVersion = engines.node;
 const requiredEnv = [
     'AZURE_MAPS_API_KEY', // List all required environment variables here
     'OPENAI_API_KEY',
-    'NEXT_PUBLIC_ENVIRONMENT'
+    'NEXT_PUBLIC_ENVIRONMENT',
+    "VERCEL_URL",
 ];
 
 // Only load dotenv if not in production
