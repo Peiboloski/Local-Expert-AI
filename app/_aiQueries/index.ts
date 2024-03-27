@@ -33,7 +33,7 @@ const getCityDescription = async ({ city, country }: { city: string, country: st
     //return 'MOCKED RESPONSE';
 
     const systemMessage =
-        `Give main information about ${city} in ${country} as if you where talking to a tourist. Use at leat 500 words. Talk about the history and what makes the city important. don't add a welcome message or mention the name of the city as it is already mentioned. Please respond STRICTLY in HTML format and don't use ** for bold or - for bullet points, don't add \`\`\`html. you can use bullet points (but don't have to use them if the response doesn't need it), paragraphs and bold text to make the information more readable.`;
+        `Give main information about ${city} in ${country} as if you where talking to a tourist. Use around 250 words. Talk about the history and what makes the city important. don't add a welcome message or mention the name of the city as it is already mentioned. Please respond STRICTLY in HTML format and don't use ** for bold or - for bullet points, don't add \`\`\`html. you can use bullet points (but don't have to use them if the response doesn't need it), paragraphs and bold text to make the information more readable.`;
     try {
         const model = getChatModel(ChatModel.GPT3)
         const prompt = ChatPromptTemplate.fromMessages([
