@@ -25,12 +25,6 @@ const getChatModel = (model: ChatModel) => {
                 openAIApiKey: process.env.OPENAI_API_KEY,
                 modelName: "gpt-4-turbo-preview"
             });
-
-        case ChatModel.GPT40Min:
-            return new ChatOpenAI({
-                openAIApiKey: process.env.OPENAI_API_KEY,
-                modelName: "gpt-4-turbo-preview"
-            });
         case ChatModel.GPT4oMin:
             return new ChatOpenAI({
                 openAIApiKey: process.env.OPENAI_API_KEY,
