@@ -9,7 +9,8 @@ import { Food } from "@prisma/client";
 
 enum ChatModel {
     GPT3 = "gpt-3.5-turbo",
-    GPT4 = "gpt-4-turbo-preview"
+    GPT4 = "gpt-4-turbo-preview",
+    GPT4oMin = "gpt-4o-mini"
 }
 
 const getChatModel = (model: ChatModel) => {
@@ -24,6 +25,17 @@ const getChatModel = (model: ChatModel) => {
                 openAIApiKey: process.env.OPENAI_API_KEY,
                 modelName: "gpt-4-turbo-preview"
             });
+
+        case ChatModel.GPT40Min:
+            return new ChatOpenAI({
+                openAIApiKey: process.env.OPENAI_API_KEY,
+                modelName: "gpt-4-turbo-preview"
+            });
+        case ChatModel.GPT4oMin:
+            return new ChatOpenAI({
+                openAIApiKey: process.env.OPENAI_API_KEY,
+                modelName: "gpt-4o-mini"
+            });
     }
 }
 
@@ -35,7 +47,7 @@ const getCityDescription = async ({ city, country }: { city: string, country: st
     const systemMessage =
         `Give main information about ${city} in ${country} as if you where talking to a tourist. Use around 250 words. Talk about the history and what makes the city important. don't add a welcome message or mention the name of the city as it is already mentioned. Please respond STRICTLY in HTML format and don't use ** for bold or - for bullet points, don't add \`\`\`html. you can use bullet points (but don't have to use them if the response doesn't need it), paragraphs and bold text to make the information more readable.`;
     try {
-        const model = getChatModel(ChatModel.GPT3)
+        const model = getChatModel(ChatModel.GPT4oMin)
         const prompt = ChatPromptTemplate.fromMessages([
             ['system', systemMessage]
         ]);
@@ -66,7 +78,7 @@ const fetchCityMustVisitAttractions = async ({ city, country }: { city: string, 
         `Give a list with the main touristic attractions in ${city}, ${country}. Give a short description of maximum 200 characters for each attraction.`;
 
     try {
-        const modelWithTools = getChatModel(ChatModel.GPT3).bind({
+        const modelWithTools = getChatModel(ChatModel.GPT4oMin).bind({
             tools: [attractionsLlmTool],
             tool_choice: attractionsLlmTool,
         })
@@ -105,7 +117,7 @@ const fetchCityMustEatFood = async ({ city, country }: { city: string, country: 
         `Give a list with the main traditional meals in ${city}, ${country}. Give a short description of maximum 1000 characters for each one`;
 
     try {
-        const modelWithTools = getChatModel(ChatModel.GPT3).bind({
+        const modelWithTools = getChatModel(ChatModel.GPT4oMin).bind({
             tools: [foodLlmTool],
             tool_choice: foodLlmTool,
         })
